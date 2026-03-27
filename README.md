@@ -240,7 +240,8 @@ create gtm wideip a www.example.com \
 /
 ├── README.md
 ├── diagrams/
-│   └── multi-dc-architecture.png
+│   └── multi-dc-architecture.ascii
+    └── multi-dc-architecture.mmd
 ├── configs/
 │   ├── dc1-ltm.tmsh
 │   ├── dc2-ltm.tmsh
