@@ -1,0 +1,21 @@
+create ltm pool pool_www_dc2 \
+    members add { 10.2.2.11:80 10.2.2.12:80 } \
+    monitor http \
+    load-balancing-mode least-connections-member
+
+create ltm profile client-ssl clientssl_www_dc2 \
+    cert www_example_com.crt \
+    key www_example_com.key \
+    chain www_example_com_chain.crt
+
+create ltm profile http http_www_dc2
+create ltm profile one-connect oneconnect_www_dc2
+
+create ltm virtual vs_www_dc2_https \
+    destination 198.51.100.20:443 \
+    ip-protocol tcp \
+    source 0.0.0.0/0 \
+    profiles add { http_www_dc2 clientssl_www_dc2 oneconnect_www_dc2 } \
+    pool pool_www_dc2 \
+    persist replace-all-with { cookie } \
+    vlans-disabled

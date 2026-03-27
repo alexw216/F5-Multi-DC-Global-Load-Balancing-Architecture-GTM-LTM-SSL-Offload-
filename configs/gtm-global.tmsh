@@ -1,0 +1,26 @@
+create gtm datacenter DC1
+create gtm datacenter DC2
+
+create gtm server LTM_DC1 \
+    datacenter DC1 \
+    product bigip \
+    addresses add { 192.0.2.11 } \
+    virtual-servers add { vs_www_dc1_https { destination 203.0.113.10:443 } }
+
+create gtm server LTM_DC2 \
+    datacenter DC2 \
+    product bigip \
+    addresses add { 192.0.2.21 } \
+    virtual-servers add { vs_www_dc2_https { destination 198.51.100.20:443 } }
+
+create gtm pool www_pool_https \
+    lb-mode round-robin \
+    members add { \
+        /Common/LTM_DC1:vs_www_dc1_https \
+        /Common/LTM_DC2:vs_www_dc2_https \
+    }
+
+create gtm wideip a www.example.com \
+    pools add { www_pool_https { order 0 } } \
+    persist-cidr-ipv4 32 \
+    persist-enabled yes

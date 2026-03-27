@@ -1,0 +1,10 @@
+flowchart TD
+    DNS[["BIG-IP DNS (GTM)\nGlobal LB"]] 
+    DNS --> DC1VIP["DC1 LTM VIP\n203.0.113.10:443"]
+    DNS --> DC2VIP["DC2 LTM VIP\n198.51.100.20:443"]
+
+    DC1VIP --> DC1Pool["DC1 Pool\n10.1.1.11:80, 10.1.1.12:80"]
+    DC2VIP --> DC2Pool["DC2 Pool\n10.2.2.11:80, 10.2.2.12:80"]
+
+    DC1Pool --> DC1App["DC1 App Servers"]
+    DC2Pool --> DC2App["DC2 App Servers"]
